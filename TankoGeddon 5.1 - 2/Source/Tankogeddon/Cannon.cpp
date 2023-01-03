@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Cannon.h"
 #include "Components/ArrowComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -111,6 +108,7 @@ void ACannon::Fire()
 	Ammunition--;
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1.f / FireRate, false);
 }
+
 void ACannon::FireSpecial()
 {
 	if (Ammunition == 0)
@@ -128,6 +126,7 @@ void ACannon::FireSpecial()
 	Ammunition--;
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1.f / FireRate, false);
 }
+
 void ACannon::Special()
 {
 	if (--CurrentQueue <= 0)
@@ -180,6 +179,7 @@ void ACannon::Special()
 		}
 	}
 }
+
 bool ACannon::IsReadyToFire()
 {
 	return bReadyToFire;
@@ -195,16 +195,19 @@ void ACannon::BeginPlay()
 	Super::BeginPlay();
 	Reload();
 }
+
 void ACannon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
 	GetWorld()->GetTimerManager().ClearTimer(ReloadTimerHandle);
 }
+
 int ACannon::GetAmmunition()
 {
 	return Ammunition;
 }
+
 void ACannon::SetAmmunition(int SavedAmmunition)
 {
 	Ammunition = SavedAmmunition;

@@ -11,7 +11,9 @@ class UDamageTaker : public UInterface
 	GENERATED_BODY()
 };
 
-
+/**
+ * 
+ */
 class TANKOGEDDON_API IDamageTaker
 {
 	GENERATED_BODY()

@@ -23,6 +23,8 @@ UCLASS()
 class TANKOGEDDON_API AParentFirePoint : public APawn, public IDamageTaker
 {
 	GENERATED_BODY()
+	
+public:	
 
 protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")

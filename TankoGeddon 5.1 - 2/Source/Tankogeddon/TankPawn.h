@@ -1,3 +1,5 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "Cannon.h"
@@ -26,90 +28,93 @@ class TANKOGEDDON_API ATankPawn : public AParentFirePoint
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
+	
 	ATankPawn();
 
 	UFUNCTION()
-		void MoveForward(float AxisValue);
+	void MoveForward(float AxisValue);
 
 	UFUNCTION()
-		void RotateRight(float AxisValue);
+	void MoveRight(float AxisValue);
 
+	UFUNCTION()
+	void RotateRight(float AxisValue);
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		USpringArmComponent* SpringArm;
+	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UCameraComponent* Camera;
+	UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
-		float MoveSpeed = 100.f;
+	float MoveSpeed = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
-		float RotationSpeed = 100.f;
+	float RotationSpeed = 100.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
-		float InterpolationKey = 0.1f;
+	float InterpolationKey = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
-		float TurretRotationInterpolationKey = 0.5f;
+	float TurretRotationInterpolationKey = 0.5f;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
-		TSubclassOf<ACannon> CannonClassSecond;
+	TSubclassOf<ACannon> CannonClassSecond;
 
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points", Meta = (MakeEditWidget = true))
-		TArray<ATargetPoint*> PatrollingPoints;
-
+    TArray<ATargetPoint*> PatrollingPoints;
+		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurency")
 
-		float MovementAccurency = 50;
+	float MovementAccurency = 50;
 
-public:
+public:	
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void FireSpecial();
+	void FireSpecial();
 
 	UFUNCTION()
-		void SetupCannon(TSubclassOf<ACannon> InCannonClass);
+	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 
 	UFUNCTION()
-		void ChangeCannon();
+	void ChangeCannon();
 
 	UFUNCTION()
-		void SetNewCannon(TSubclassOf<ACannon> InCannonClass);
+	void SetNewCannon(TSubclassOf<ACannon> InCannonClass);
 
 	UFUNCTION()
-		void IncreaseAmmunition(int Ammunition);
+	void IncreaseAmmunition(int Ammunition);
 
 	UFUNCTION()
-		TArray<FVector> GetPatrollingPoints();
+	TArray<FVector> GetPatrollingPoints();
 
 	UFUNCTION()
-		void SetPatrollingPoints(const TArray<ATargetPoint*>& NewPatrollingPoints);
+	void SetPatrollingPoints(const TArray<ATargetPoint*>& NewPatrollingPoints);
 	UFUNCTION()
-		float GetMovementAccurency()
+	float GetMovementAccurency() 
 	{
-		return MovementAccurency;
+		return MovementAccurency; 
 	};
 	UFUNCTION()
-		FVector GetTurretForwardVector();
+	FVector GetTurretForwardVector();
 
 	UFUNCTION()
-		void RotateTurretTo(FVector TargetPosition);
+	void RotateTurretTo(FVector TargetPosition);
 
 	UFUNCTION()
-		FVector GetEyesPosition();
+	FVector GetEyesPosition();
 
 private:
-	float TargetForwardAxisValue;
-	float TargetRightAxisValue;
-	float CurrentRightAxisValue;
+	float targetForwardAxisValue;
+	float targetRightAxisValue;
+	float currentRightAxisValue;
 
 	TSubclassOf<ACannon> CurrentCannon;
 	UPROPERTY()
-		ATankPlayerController* TankController;
+	ATankPlayerController* TankController;
 };

@@ -16,7 +16,8 @@ void ATankAIController::Initalize()
         PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
         PatrollingPoints = TankPawn->GetPatrollingPoints();
         MovementAccurency = TankPawn->GetMovementAccurency();
-      
+        FVector PawnLocation = TankPawn->GetActorLocation();
+
         CurrentPatrolPointIndex = PatrollingPoints.Num() == 0 ? INDEX_NONE : 0;
     }
 }
@@ -39,6 +40,7 @@ void ATankAIController::Tick(float DeltaTime)
     }
     TankPawn->MoveForward(1.f);
 
+    //UE_LOG(LogTemp, Warning, TEXT("AI Rotation forwardAngle: %f rightAngle: %f rotationValue: %f"), forwardAngle, rightAngle, rotationValue);
     float RotationValue = GetRotationgValue();
     TankPawn->RotateRight(RotationValue);
 
@@ -144,6 +146,5 @@ bool ATankAIController::DetectPlayerVisibility()
             return HitResult.GetActor() == PlayerPawn;
         }
     }
-    DrawDebugLine(GetWorld(), EyesPos, PlayerPos, FColor::Cyan, false, 0.5f, 0, 10);
     return false;
 }

@@ -50,10 +50,12 @@ void ATurret::PostInitializeComponents()
 
 void ATurret::BeginPlay()
 {
-	
+	//Super::BeginPlay();
+
 	AParentFirePoint::BeginPlay();
 
-	
+	//TankPawn = Cast<ATankPawn>(GetPawn());
+
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 	FTimerHandle _targetingTimerHandle;
@@ -113,11 +115,10 @@ bool ATurret::DetectPlayerVisibility()
 	{
 		if (HitResult.GetActor())
 		{
-			//DrawDebugLine(GetWorld(), EyesPos, HitResult.Location, FColor::Cyan, false, 0.5f, 0, 10);
 			return HitResult.GetActor() == PlayerPawn;
 		}
 	}
-	//DrawDebugLine(GetWorld(), EyesPos, PlayerPos, FColor::Cyan, false, 0.5f, 0, 10);
+	
 	return false;
 }
 FVector ATurret::GetEyesPosition()

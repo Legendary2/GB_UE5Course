@@ -7,7 +7,9 @@
 #include "TankPlayerController.generated.h"
 
 class ATankPawn;
-
+/**
+ * 
+ */
 UCLASS()
 class TANKOGEDDON_API ATankPlayerController : public APlayerController
 {
@@ -26,6 +28,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void MoveForward(float AxisValue);
+    void MoveRight(float AxisValue);
 	void RotateRight(float AxisValue);
 	void Fire();
 	void FireSpecial();

@@ -64,7 +64,11 @@ void AParentFirePoint::Destroyed()
 AParentFirePoint::AParentFirePoint()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+	//DestroyEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Shoot effect"));
+	//DestroyEffect->SetupAttachment(BodyMesh);
+
+	//DestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio effect"));
+	//DestroyAudioEffect->SetupAttachment(BodyMesh);
 }
 void AParentFirePoint::Fire()
 {

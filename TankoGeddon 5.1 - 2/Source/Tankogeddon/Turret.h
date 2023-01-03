@@ -10,6 +10,7 @@
 #include "HealthComponent.h"
 #include "ParentFirePoint.h"
 #include "Turret.generated.h"
+//#include "TankPawn.h"
 
 class UStaticMeshComponent;
 class UHealthComponent;

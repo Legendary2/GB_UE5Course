@@ -13,7 +13,7 @@
 
 ATankPawn::ATankPawn()
 {
-	PrimaryActorTick.bCanEverTick = true;
+ 	PrimaryActorTick.bCanEverTick = true;
 
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank body"));
 	RootComponent = BodyMesh;
@@ -42,10 +42,14 @@ ATankPawn::ATankPawn()
 	HitCollider->SetupAttachment(BodyMesh);
 }
 
-
 void ATankPawn::MoveForward(float AxisValue)
 {
-	TargetForwardAxisValue = AxisValue;
+	targetForwardAxisValue = AxisValue;
+}
+
+void ATankPawn::MoveRight(float AxisValue)
+{
+	targetRightAxisValue = AxisValue;
 }
 
 void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
@@ -62,6 +66,7 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
 	Cannon = GetWorld()->SpawnActor<ACannon>(InCannonClass, Params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
+
 void ATankPawn::SetNewCannon(TSubclassOf<ACannon> InCannonClass)
 {
 	if (CurrentCannon == CannonClass)
@@ -77,6 +82,7 @@ void ATankPawn::SetNewCannon(TSubclassOf<ACannon> InCannonClass)
 		SetupCannon(CannonClassSecond);
 	}
 }
+
 void ATankPawn::ChangeCannon()
 {
 	if (CurrentCannon == CannonClass)
@@ -94,6 +100,7 @@ void ATankPawn::ChangeCannon()
 		Cannon->SetAmmunition(current);
 	}
 }
+
 void ATankPawn::FireSpecial()
 {
 	if (Cannon)
@@ -107,11 +114,12 @@ void ATankPawn::BeginPlay()
 	AParentFirePoint::BeginPlay();
 	TankController = Cast<ATankPlayerController>(GetController());
 	CurrentCannon = CannonClass;
+	//SetupCannon(CannonClass);
 
 }
 void ATankPawn::RotateRight(float AxisValue)
 {
-	TargetRightAxisValue = AxisValue;
+	targetRightAxisValue = AxisValue;
 }
 
 void ATankPawn::Tick(float DeltaTime)
@@ -119,16 +127,15 @@ void ATankPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// Movemevt
-	FVector CurrentLocation = GetActorLocation();
+	FVector currentLocation = GetActorLocation();
 	FVector ForwardVector = GetActorForwardVector();
-	
-	FVector MovePosition = CurrentLocation + ForwardVector * MoveSpeed * TargetForwardAxisValue * DeltaTime;
-	
-	SetActorLocation(MovePosition, true);
+	FVector rightVector = GetActorRightVector();
+	FVector movePosition = currentLocation + ForwardVector * MoveSpeed * targetForwardAxisValue * DeltaTime + rightVector * MoveSpeed * targetRightAxisValue * DeltaTime;
+	SetActorLocation(movePosition, true);
 
 	//Rotation
-	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, TargetRightAxisValue, InterpolationKey);
-	float yawRotation = RotationSpeed * CurrentRightAxisValue * DeltaTime;
+	currentRightAxisValue = FMath::Lerp(currentRightAxisValue, targetRightAxisValue, InterpolationKey);
+	float yawRotation = RotationSpeed * currentRightAxisValue * DeltaTime;
 	FRotator currentRotation = GetActorRotation();
 
 	yawRotation = currentRotation.Yaw + yawRotation;
@@ -143,6 +150,7 @@ void ATankPawn::Tick(float DeltaTime)
 		RotateTurretTo(mousePos);
 	}
 }
+
 void ATankPawn::IncreaseAmmunition(int Ammunition)
 {
 	Cannon->SetAmmunition(Cannon->GetAmmunition() + Ammunition);
@@ -161,10 +169,12 @@ void ATankPawn::RotateTurretTo(FVector TargetPosition)
 	TargetRotation.Roll = CurrRotation.Roll;
 	TurretMesh->SetWorldRotation(FMath::Lerp(CurrRotation, TargetRotation, TurretRotationInterpolationKey));
 }
+
 FVector ATankPawn::GetEyesPosition()
 {
 	return CannonSetupPoint->GetComponentLocation();
 }
+
 TArray<FVector> ATankPawn::GetPatrollingPoints()
 {
 	TArray<FVector> Result;
@@ -175,6 +185,7 @@ TArray<FVector> ATankPawn::GetPatrollingPoints()
 
 	return Result;
 }
+
 void ATankPawn::SetPatrollingPoints(const TArray<ATargetPoint*>& NewPatrollingPoints)
 {
 	PatrollingPoints = NewPatrollingPoints;

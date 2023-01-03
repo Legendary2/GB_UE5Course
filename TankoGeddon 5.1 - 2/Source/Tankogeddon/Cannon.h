@@ -8,7 +8,6 @@
 #include "Components/AudioComponent.h"
 #include "Cannon.generated.h"
 
-
 class UStaticMeshComponent;
 class UArrowComponent;
 class AProjectile;
